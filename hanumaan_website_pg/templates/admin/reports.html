@@ -1,0 +1,104 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Reports – Admin{% endblock %}
+{% block page_title %}Reports & Analytics{% endblock %}
+
+{% block head %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem">
+
+  <!-- Daily Trend -->
+  <div class="card">
+    <div class="card-header"><h3>Daily Enquiries (Last 30 Days)</h3></div>
+    <div class="card-body" style="padding:1.5rem">
+      <canvas id="dailyChart" height="200"></canvas>
+    </div>
+  </div>
+
+  <!-- By Status -->
+  <div class="card">
+    <div class="card-header"><h3>Enquiries by Status</h3></div>
+    <div class="card-body" style="padding:1.5rem;display:flex;justify-content:center">
+      <canvas id="statusChart" height="200"></canvas>
+    </div>
+  </div>
+
+  <!-- By Type -->
+  <div class="card">
+    <div class="card-header"><h3>Enquiries by Type</h3></div>
+    <div class="card-body" style="padding:1.5rem">
+      <canvas id="typeChart" height="200"></canvas>
+    </div>
+  </div>
+
+  <!-- Summary Table -->
+  <div class="card">
+    <div class="card-header">
+      <h3>Status Summary</h3>
+      <a href="/admin/enquiries/export" class="btn btn-accent btn-sm">⬇ Export CSV</a>
+    </div>
+    <div class="card-body">
+      <table>
+        <thead><tr><th>Status</th><th>Count</th></tr></thead>
+        <tbody>
+          {% for row in by_status %}
+          <tr><td>{{ row.status }}</td><td><strong>{{ row.cnt }}</strong></td></tr>
+          {% endfor %}
+          {% if not by_status %}
+          <tr><td colspan="2" style="text-align:center;color:#7a6d82;padding:1.5rem">No data yet</td></tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const daily = {{ daily | tojson }};
+const byStatus = {{ by_status | tojson }};
+const byType = {{ by_type | tojson }};
+
+// Daily Chart
+new Chart(document.getElementById('dailyChart'), {
+  type: 'line',
+  data: {
+    labels: daily.map(d => d.day),
+    datasets: [{
+      label: 'Enquiries',
+      data: daily.map(d => d.cnt),
+      borderColor: '#6b3fa0', backgroundColor: 'rgba(107,63,160,.1)',
+      tension: 0.4, fill: true, pointRadius: 4
+    }]
+  },
+  options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+});
+
+// Status Pie
+if (byStatus.length) {
+  new Chart(document.getElementById('statusChart'), {
+    type: 'doughnut',
+    data: {
+      labels: byStatus.map(d => d.status),
+      datasets: [{ data: byStatus.map(d => d.cnt), backgroundColor: ['#6b3fa0','#c9963a','#2d7a3a','#1565c0','#e65100','#c0392b'] }]
+    },
+    options: { responsive: true, maintainAspectRatio: false }
+  });
+}
+
+// Type Bar
+if (byType.length) {
+  new Chart(document.getElementById('typeChart'), {
+    type: 'bar',
+    data: {
+      labels: byType.map(d => d.enquiry_type),
+      datasets: [{ label: 'Count', data: byType.map(d => d.cnt), backgroundColor: '#6b3fa0', borderRadius: 6 }]
+    },
+    options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+  });
+}
+</script>
+{% endblock %}

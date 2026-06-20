@@ -1,0 +1,96 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Dashboard – Admin{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="stat-cards">
+  <div class="stat-card accent">
+    <div class="label">Today's Enquiries</div>
+    <div class="value">{{ stats.today }}</div>
+    <div class="sub">New leads today</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">This Week</div>
+    <div class="value">{{ stats.weekly }}</div>
+    <div class="sub">Last 7 days</div>
+  </div>
+  <div class="stat-card success">
+    <div class="label">This Month</div>
+    <div class="value">{{ stats.monthly }}</div>
+    <div class="sub">Last 30 days</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">Total Enquiries</div>
+    <div class="value">{{ stats.total }}</div>
+    <div class="sub">All time</div>
+  </div>
+  <div class="stat-card danger">
+    <div class="label">New Leads</div>
+    <div class="value">{{ stats.new_leads }}</div>
+    <div class="sub">Needs follow-up</div>
+  </div>
+</div>
+
+<!-- Recent Enquiries -->
+<div class="card">
+  <div class="card-header">
+    <h3>Recent Enquiries</h3>
+    <a href="/admin/enquiries" class="btn btn-primary btn-sm">View All</a>
+  </div>
+  <div class="card-body">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th><th>Name</th><th>Phone</th><th>Type</th><th>Status</th><th>Date</th><th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for e in recent %}
+        <tr>
+          <td>{{ e.id }}</td>
+          <td><strong>{{ e.name }}</strong></td>
+          <td><a href="tel:{{ e.phone }}">{{ e.phone }}</a></td>
+          <td>{{ e.enquiry_type }}</td>
+          <td>
+            <span class="badge badge-{{ e.status|lower|replace(' ','') }}
+              {% if e.status=='New Lead' %}badge-new
+              {% elif e.status=='Contacted' %}badge-contacted
+              {% elif e.status=='Visit Scheduled' %}badge-visit
+              {% elif e.status=='Interested' %}badge-interested
+              {% elif e.status=='Booked' %}badge-booked
+              {% elif e.status=='Rejected' %}badge-rejected
+              {% endif %}">{{ e.status }}</span>
+          </td>
+          <td>{{ e.created_at[:10] }}</td>
+          <td><a href="/admin/enquiries?search={{ e.phone }}" class="btn btn-outline btn-sm">View</a></td>
+        </tr>
+        {% else %}
+        <tr><td colspan="7" style="text-align:center;color:#7a6d82;padding:2rem">No enquiries yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Audit Log -->
+<div class="card">
+  <div class="card-header"><h3>Recent Activity Log</h3></div>
+  <div class="card-body">
+    <table>
+      <thead><tr><th>Time</th><th>User</th><th>Action</th><th>Details</th></tr></thead>
+      <tbody>
+        {% for log in audit %}
+        <tr>
+          <td style="font-size:.78rem;color:#7a6d82">{{ log.created_at[:19] }}</td>
+          <td><strong>{{ log.username }}</strong></td>
+          <td>{{ log.action }}</td>
+          <td style="font-size:.82rem;color:#7a6d82">{{ log.details }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="4" style="text-align:center;color:#7a6d82;padding:1.5rem">No activity yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Login – Hanumaan Luxury Ladies PG</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{--primary:#6b3fa0;--primary-dark:#4a2a73;--accent:#c9963a;--border:#ecdff3;--text:#1e1228;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Jost',sans-serif;background:linear-gradient(135deg,#130d1e 0%,#4a2a73 50%,#6b3fa0 100%);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem;}
+    .login-card{background:white;border-radius:24px;padding:2.5rem 2rem;width:100%;max-width:400px;box-shadow:0 30px 80px rgba(0,0,0,.35);}
+    .login-logo{text-align:center;margin-bottom:2rem;}
+    .login-logo img{width:70px;height:70px;object-fit:contain;border-radius:50%;margin:0 auto .8rem;}
+    .login-logo h1{font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--primary);}
+    .login-logo p{font-size:.8rem;color:#7a6d82;margin-top:.2rem;}
+    .form-group{margin-bottom:1rem;}
+    .form-group label{display:block;font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:#7a6d82;margin-bottom:.4rem;}
+    .form-group input{width:100%;padding:.7rem 1rem;border:1.5px solid var(--border);border-radius:10px;font-family:'Jost',sans-serif;font-size:.9rem;color:var(--text);outline:none;transition:border-color .2s;}
+    .form-group input:focus{border-color:var(--primary);}
+    .captcha-row{display:flex;align-items:center;gap:.8rem;background:#fdf5f9;border:1.5px solid var(--border);border-radius:10px;padding:.6rem 1rem;}
+    .captcha-q{font-size:.95rem;font-weight:600;color:var(--primary);white-space:nowrap;}
+    .captcha-row input{border:none;background:transparent;flex:1;font-size:.95rem;outline:none;font-family:'Jost',sans-serif;}
+    .btn-login{width:100%;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:white;border:none;padding:.85rem;border-radius:12px;font-family:'Jost',sans-serif;font-size:1rem;font-weight:600;cursor:pointer;transition:all .25s;margin-top:.5rem;}
+    .btn-login:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(107,63,160,.4);}
+    .error-msg{background:#fff0f0;border:1px solid #fcc;color:#c0392b;padding:.7rem 1rem;border-radius:10px;font-size:.88rem;margin-bottom:1rem;text-align:center;}
+    .admin-back{text-align:center;margin-top:1.5rem;font-size:.82rem;color:#7a6d82;}
+    .admin-back a{color:var(--primary);font-weight:500;}
+    .secure-badge{display:flex;align-items:center;justify-content:center;gap:.4rem;font-size:.75rem;color:#7a6d82;margin-top:1.2rem;}
+  </style>
+</head>
+<body>
+<div class="login-card">
+  <div class="login-logo">
+    <img src="/static/images/logo.png" alt="Hanumaan Logo">
+    <h1>Admin Portal</h1>
+    <p>Hanumaan Luxury Ladies PG</p>
+  </div>
+
+  {% if error %}
+  <div class="error-msg">⚠️ {{ error }}</div>
+  {% endif %}
+
+  <form method="POST" action="/admin/login" onsubmit="return validateCaptcha()">
+    <div class="form-group">
+      <label>Username</label>
+      <input type="text" name="username" placeholder="Enter username" required autocomplete="username"/>
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" name="password" placeholder="Enter password" required autocomplete="current-password"/>
+    </div>
+    <div class="form-group">
+      <label>Security Check</label>
+      <div class="captcha-row">
+        <span class="captcha-q" id="captchaQ"></span>
+        <input type="text" id="captchaAns" placeholder="Answer" required inputmode="numeric"/>
+        <input type="hidden" name="captcha" id="captchaHidden"/>
+      </div>
+    </div>
+    <button type="submit" class="btn-login">🔐 Sign In</button>
+  </form>
+
+  <div class="secure-badge">🔒 Secured with HTTPS & Rate Limiting</div>
+  <div class="admin-back"><a href="/">← Back to Website</a></div>
+</div>
+
+<script>
+  let captchaAnswer = 0;
+  function genCaptcha() {
+    const a = Math.floor(Math.random()*10)+1;
+    const b = Math.floor(Math.random()*10)+1;
+    captchaAnswer = a + b;
+    document.getElementById('captchaQ').textContent = a + ' + ' + b + ' = ?';
+    document.getElementById('captchaHidden').value = captchaAnswer;
+  }
+  function validateCaptcha() {
+    const ans = parseInt(document.getElementById('captchaAns').value, 10);
+    if (ans !== captchaAnswer) {
+      alert('Incorrect security answer. Please try again.');
+      genCaptcha();
+      document.getElementById('captchaAns').value = '';
+      return false;
+    }
+    return true;
+  }
+  genCaptcha();
+</script>
+</body>
+</html>

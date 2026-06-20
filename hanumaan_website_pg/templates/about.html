@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% block title %}About Us – Hanumaan Luxury Ladies PG, Tharamani Chennai{% endblock %}
+{% block canonical %}/about{% endblock %}
+{% block desc %}Learn about Hanumaan Luxury Ladies PG – your safe, comfortable and luxurious ladies PG in Tharamani, Chennai near Tidel Park.{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="page-hero-content container">
+    <h1>About Us</h1>
+    <p>Our story, our mission, our promise to you</p>
+    <div class="page-hero-breadcrumb"><a href="/">Home</a> › About Us</div>
+  </div>
+</section>
+
+<!-- STORY -->
+<section class="section">
+  <div class="container about-grid">
+    <div class="about-img-wrap">
+      <img src="/static/images/building.png" alt="Hanumaan Luxury Ladies PG – Premium building in Tharamani" loading="lazy"/>
+    </div>
+    <div class="about-text">
+      <span class="section-label">Our Story</span>
+      <h2>A Safe Haven for Every Woman in Chennai</h2>
+      <p>Hanumaan Luxury Ladies PG was founded with one goal: to give every lady a safe, comfortable, and affordable place to call home when living away from family in Chennai.</p>
+      <p>We are located at <strong>No:10, Gangai Street, Bharathi Nagar, Tharamani, Chennai – 600113</strong> — strategically placed near major IT hubs like Tidel Park, Ascendas IT Park, and SIPCOT IT Park, making us the top choice for working women and students.</p>
+      <p>We treat every resident like family. From the moment you walk in, you'll feel the warmth, security, and comfort of home.</p>
+      <ul class="about-highlights">
+        <li>🏡 Luxury building with beautiful architecture</li>
+        <li>🍱 Fresh, nutritious home-cooked meals</li>
+        <li>🔒 24/7 CCTV surveillance & security guard</li>
+        <li>💜 Caring, responsive management team</li>
+        <li>💡 Zero compromise on cleanliness</li>
+        <li>📶 High-speed internet for WFH & study</li>
+        <li>❄️ Both AC & Non-AC rooms available</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- WHY CHOOSE -->
+<section class="section" style="background:var(--bg-soft)">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label">Why Hanumaan</span>
+      <h2>Why Choose Us?</h2>
+      <p>We're not just a PG — we're a community</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card">
+        <span class="why-icon">🛡️</span>
+        <h4>Safety First</h4>
+        <p>24/7 CCTV cameras on every floor, secure gated entry, and a dedicated security guard ensure complete peace of mind.</p>
+      </div>
+      <div class="why-card">
+        <span class="why-icon">🍽️</span>
+        <h4>Homely Food</h4>
+        <p>Fresh, nutritious, home-cooked meals served daily. We know that good food equals a good mood and productive day.</p>
+      </div>
+      <div class="why-card">
+        <span class="why-icon">🧹</span>
+        <h4>Spotless Rooms</h4>
+        <p>Daily housekeeping ensures your room is always neat, clean, and hygienic. Zero compromise on cleanliness.</p>
+      </div>
+      <div class="why-card">
+        <span class="why-icon">💬</span>
+        <h4>Responsive Management</h4>
+        <p>Any concern? We resolve it fast. Our caretakers and management are always just a call away — 24/7.</p>
+      </div>
+      <div class="why-card">
+        <span class="why-icon">📍</span>
+        <h4>Prime Location</h4>
+        <p>Located in Tharamani — walking distance from Tidel Park, Ascendas, and major IT companies in Chennai.</p>
+      </div>
+      <div class="why-card">
+        <span class="why-icon">💰</span>
+        <h4>Best Value</h4>
+        <p>Premium amenities at competitive prices. Transparent pricing, no hidden charges. Flexible payment options.</p>
+      </div>
+      <div class="why-card">
+        <span class="why-icon">🌐</span>
+        <h4>High-Speed Internet</h4>
+        <p>Reliable high-speed WiFi throughout the building — perfect for remote work, video calls, and studies.</p>
+      </div>
+      <div class="why-card">
+        <span class="why-icon">👭</span>
+        <h4>Ladies Community</h4>
+        <p>Exclusively for women — a supportive, safe community of working women and students from across India.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEARBY LANDMARKS -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label">Proximity</span>
+      <h2>Near All Major IT Hubs</h2>
+      <p>Strategically located in Tharamani, Chennai</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1.2rem;margin-bottom:2.5rem">
+      {% for icon, place, dist in [
+        ("🏢","Tidel Park","3.5 km"),("🏢","Ascendas IT Park","3.2 km"),
+        ("🏢","RMZ Millenia","1.9 km"),("🏢","World Trade Centre","3.5 km"),
+        ("🏢","Chennai One IT Park","4 km"),("🏥","Apollo Hospital","2 km"),
+        ("🚉","Perungudi Railway Station","500 m"),("🚌","Bus Stop","100 m"),("🏫","IIT Madras","2 km"),("🛒","Supermarkets & Cafés","Walking Distance")
+      ] %}
+      <div style="background:var(--bg-soft);border:1.5px solid var(--border);border-radius:14px;padding:1.2rem;display:flex;align-items:center;gap:.8rem">
+        <span style="font-size:1.8rem">{{ icon }}</span>
+        <div>
+          <strong style="font-size:.9rem;color:var(--text)">{{ place }}</strong>
+          <p style="font-size:.8rem;color:var(--primary);font-weight:500">{{ dist }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section" style="background:linear-gradient(135deg,var(--primary-dark),var(--primary));text-align:center;padding:4rem 0">
+  <div class="container">
+    <h2 style="color:white;margin-bottom:1rem">Ready to Make Hanumaan Your Home?</h2>
+    <p style="color:rgba(255,255,255,.8);margin-bottom:2rem;font-size:1.05rem">Visit us at No:10, Gangai Street, Bharathi Nagar, Tharamani, Chennai – 600113</p>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+      <a href="/#enquire" class="btn-gold">Enquire Now</a>
+      <a href="tel:+917092189999" class="btn-outline">📞 +91 70921 89999</a>
+      <a href="https://wa.me/917092189999" target="_blank" class="btn-outline">💬 WhatsApp</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}Gallery – Hanumaan Luxury Ladies PG, Tharamani Chennai{% endblock %}
+{% block canonical %}/gallery{% endblock %}
+{% block desc %}Photo gallery of Hanumaan Luxury Ladies PG – rooms, building, facilities and amenities in Tharamani, Chennai.{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="page-hero-content container">
+    <h1>Photo Gallery</h1>
+    <p>A visual tour of your future home</p>
+    <div class="page-hero-breadcrumb"><a href="/">Home</a> › Gallery</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label">Our PG in Pictures</span>
+      <h2>Inside Hanumaan Luxury Ladies PG</h2>
+    </div>
+
+    <div class="gallery-filter">
+      <button class="filter-btn active" data-cat="all">All Photos</button>
+      <button class="filter-btn" data-cat="building">Building</button>
+      <button class="filter-btn" data-cat="room">Rooms</button>
+      <button class="filter-btn" data-cat="common">Common Areas</button>
+    </div>
+
+    <!-- Static PG images always shown -->
+    <div class="gallery-grid">
+      <div class="gallery-item" data-src="/static/images/building.png" data-title="Hanumaan Luxury Ladies PG – Main Building" data-cat="building">
+        <img src="/static/images/building.png" alt="Hanumaan Luxury Ladies PG Main Building – Tharamani Chennai" loading="lazy"/>
+        <div class="gallery-item-overlay"><span>Main Building</span></div>
+      </div>
+      <div class="gallery-item" data-src="/static/images/pg2.jpeg" data-title="AC Room with wardrobes" data-cat="room">
+        <img src="/static/images/pg2.jpeg" alt="AC Room with blue wardrobes" loading="lazy"/>
+        <div class="gallery-item-overlay"><span>AC Room</span></div>
+      </div>
+      <div class="gallery-item" data-src="/static/images/pg3.jpeg" data-title="Well-furnished shared room" data-cat="room">
+        <img src="/static/images/pg3.jpeg" alt="Furnished shared room" loading="lazy"/>
+        <div class="gallery-item-overlay"><span>Furnished Room</span></div>
+      </div>
+      <div class="gallery-item" data-src="/static/images/pg1.jpeg" data-title="Double sharing room" data-cat="room">
+        <img src="/static/images/pg1.jpeg" alt="Double sharing room with wardrobes" loading="lazy"/>
+        <div class="gallery-item-overlay"><span>Double Sharing Room</span></div>
+      </div>
+      <!-- <div class="gallery-item" data-src="/static/images/pg4.jpeg" data-title="Interior corridors" data-cat="common">
+        <img src="/static/images/pg4.jpeg" alt="Interior corridors of Hanumaan PG" loading="lazy"/>
+        <div class="gallery-item-overlay"><span>Corridors</span></div> -->
+      </div>
+      <div class="gallery-item" data-src="/static/images/pg5.jpeg" data-title="Non-AC room" data-cat="room">
+        <img src="/static/images/pg5.jpeg" alt="Non-AC shared room" loading="lazy"/>
+        <div class="gallery-item-overlay"><span>Non-AC Room</span></div>
+      </div>
+
+      <!-- Dynamic gallery images from admin uploads -->
+      {% for img in images %}
+      <div class="gallery-item" data-src="/static/images/gallery/{{ img.filename }}" data-title="{{ img.title or 'Gallery Photo' }}" data-cat="{{ img.category or 'general' }}">
+        <img src="/static/images/gallery/{{ img.filename }}" alt="{{ img.title or 'Hanumaan PG Photo' }}" loading="lazy"/>
+        <div class="gallery-item-overlay"><span>{{ img.title or '' }}</span></div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section" style="background:var(--bg-soft);text-align:center;padding:3.5rem 0">
+  <div class="container">
+    <h2 style="margin-bottom:1rem">Like What You See?</h2>
+    <p style="color:var(--text-muted);margin-bottom:2rem">Come visit us in person for a free tour!</p>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+      <a href="/#enquire" class="btn-primary">Book a Visit</a>
+      <a href="https://wa.me/917092189999" target="_blank" class="social-link-btn social-wa" style="padding:.8rem 1.5rem;font-size:.9rem">💬 WhatsApp Us</a>
+    </div>
+  </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image Lightbox">
+  <button class="lightbox-close" id="lightboxClose" aria-label="Close lightbox">×</button>
+  <button class="lightbox-prev" id="lightboxPrev" aria-label="Previous image">‹</button>
+  <img id="lightboxImg" src="" alt="Gallery image"/>
+  <button class="lightbox-next" id="lightboxNext" aria-label="Next image">›</button>
+</div>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}Facilities – Hanumaan Luxury Ladies PG, Tharamani Chennai{% endblock %}
+{% block canonical %}/facilities{% endblock %}
+{% block desc %}Explore all premium facilities at Hanumaan Luxury Ladies PG – WiFi, AC, food, CCTV, washing machine, geyser, TV and more in Tharamani, Chennai.{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="page-hero-content container">
+    <h1>Our Facilities</h1>
+    <p>Everything you need for a comfortable, happy life</p>
+    <div class="page-hero-breadcrumb"><a href="/">Home</a> › Facilities</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label">Premium Amenities</span>
+      <h2>All-Inclusive Facilities</h2>
+      <p>Designed for your comfort, safety, and well-being</p>
+    </div>
+
+    <div class="facilities-detail-grid">
+      {% for icon, title, desc in [
+        ("📶","High-Speed WiFi","Reliable high-speed internet throughout the building — perfect for remote work, video calls, streaming, and online studies."),
+        ("🍽️","Food Included","Freshly cooked, hygienic home-style meals served daily. Nutritious and delicious South Indian cuisine prepared with care."),
+        ("❄️","Air Conditioning","Comfortable AC rooms available to beat Chennai's heat. Non-AC rooms also available at lower pricing."),
+        ("🧊","Refrigerator","Access to refrigerator on every floor for storing your food, beverages, and medicines safely."),
+        ("🚿","Hot Water Geyser","24/7 instant hot water geyser in all bathrooms — no cold shower surprises!"),
+        ("🫧","Washing Machine","Modern washing machines available for residents. Keep your clothes clean without stepping out."),
+        ("📺","Television","Common TV area for relaxation and entertainment. Unwind after a long day."),
+        ("🧹","Daily Housekeeping","Our dedicated housekeeping team cleans your room every day — maintaining hygiene and freshness."),
+        ("📹","24/7 CCTV Surveillance","CCTV cameras installed throughout the property — corridors, entrance, common areas — for round-the-clock security."),
+        ("💧","Water Dispenser","RO-purified drinking water dispensers on all floors for safe, clean drinking water anytime."),
+        ("🅿️","Parking","Dedicated two-wheeler and bicycle parking space available within the premises."),
+        ("🛡️","Security Guard","A dedicated security guard on duty to ensure only authorized visitors enter the premises."),
+        ("🍳","Self Cooking Allowed","A well-equipped kitchen space for residents who prefer to cook their own meals occasionally."),
+        ("🚪","Individual Lockers","Personal lockers provided in rooms to safely store your valuables and important documents."),
+        ("🌿","Spacious Corridors","Wide, well-lit corridors and common areas designed to feel open, airy and comfortable.")
+      ] %}
+      <div class="facility-detail-card">
+        <span class="facility-detail-icon">{{ icon }}</span>
+        <h4>{{ title }}</h4>
+        <p>{{ desc }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- HOUSE RULES -->
+<section class="section" style="background:var(--bg-soft)">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label">House Rules</span>
+      <h2>Our Guidelines</h2>
+      <p>A few simple rules to ensure everyone's comfort and safety</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;max-width:900px;margin:0 auto">
+      {% for rule in [
+        "🕙 Gate closes at 10:30 PM daily",
+        "🚫 No male visitors inside the premises",
+        "🚭 No smoking or alcohol on premises",
+        "🔇 Maintain silence after 10 PM",
+        "🧹 Keep common areas clean and tidy",
+        "💡 Switch off lights & fans when leaving room",
+        "📋 Valid ID proof required at admission",
+        "⚠️ Report any maintenance issues immediately",
+        "🎵 Use earphones for music/videos in common areas",
+        "🐾 No pets allowed on premises"
+      ] %}
+      <div style="background:white;border:1.5px solid var(--border);border-radius:12px;padding:1rem 1.2rem;font-size:.9rem;color:var(--text)">{{ rule }}</div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section" style="text-align:center;padding:4rem 0">
+  <div class="container">
+    <h2 style="margin-bottom:1rem">Experience These Facilities Yourself!</h2>
+    <p style="color:var(--text-muted);margin-bottom:2rem">Visit us or call now to schedule a free tour of our PG</p>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+      <a href="/#enquire" class="btn-primary">Book a Visit</a>
+      <a href="tel:+917092189999" class="btn-gold">📞 Call: +91 70921 89999</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

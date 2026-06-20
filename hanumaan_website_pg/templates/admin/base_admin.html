@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{% block title %}Admin – Hanumaan Luxury Ladies PG{% endblock %}</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{--primary:#6b3fa0;--primary-dark:#4a2a73;--accent:#c9963a;--sidebar-bg:#130d1e;--sidebar-width:240px;--text:#1e1228;--border:#ecdff3;--bg:#f8f4fc;--success:#2d7a3a;--danger:#c0392b;--warning:#d68910;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh;}
+
+    /* Sidebar */
+    .sidebar{width:var(--sidebar-width);background:var(--sidebar-bg);position:fixed;top:0;left:0;height:100vh;display:flex;flex-direction:column;z-index:100;overflow-y:auto;}
+    .sidebar-header{padding:1.5rem 1.2rem 1rem;border-bottom:1px solid rgba(255,255,255,.08);}
+    .sidebar-logo{display:flex;align-items:center;gap:.6rem;}
+    .sidebar-logo img{width:40px;height:40px;border-radius:50%;object-fit:contain;border:1.5px solid rgba(255,255,255,.2);}
+    .sidebar-logo-text{font-family:'Cormorant Garamond',serif;font-size:1rem;color:white;line-height:1.2;}
+    .sidebar-logo-text small{display:block;font-family:'Jost',sans-serif;font-size:.68rem;color:rgba(255,255,255,.4);font-weight:400;}
+    nav.sidebar-nav{flex:1;padding:1rem 0;}
+    .nav-section-label{font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);padding:.8rem 1.2rem .3rem;}
+    .sidebar-nav a{display:flex;align-items:center;gap:.8rem;padding:.7rem 1.2rem;color:rgba(255,255,255,.65);font-size:.88rem;font-weight:500;transition:all .2s;text-decoration:none;}
+    .sidebar-nav a:hover,.sidebar-nav a.active{background:rgba(107,63,160,.4);color:white;}
+    .sidebar-nav a.active{border-left:3px solid var(--accent);}
+    .sidebar-nav span.icon{font-size:1.1rem;width:22px;text-align:center;}
+    .sidebar-bottom{padding:1rem 1.2rem;border-top:1px solid rgba(255,255,255,.08);}
+    .sidebar-user{font-size:.82rem;color:rgba(255,255,255,.5);margin-bottom:.6rem;}
+    .sidebar-user strong{display:block;color:rgba(255,255,255,.85);font-size:.88rem;}
+    .btn-logout{display:block;text-align:center;background:rgba(255,255,255,.08);color:rgba(255,255,255,.7);padding:.5rem;border-radius:8px;font-size:.82rem;transition:background .2s;text-decoration:none;}
+    .btn-logout:hover{background:rgba(192,57,43,.4);color:white;}
+
+    /* Main */
+    .main-wrap{margin-left:var(--sidebar-width);flex:1;display:flex;flex-direction:column;min-height:100vh;}
+    .topbar{background:white;border-bottom:1px solid var(--border);padding:.85rem 2rem;display:flex;align-items:center;justify-content:space-between;}
+    .topbar h2{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--primary);}
+    .topbar-right{display:flex;align-items:center;gap:1rem;font-size:.85rem;color:#7a6d82;}
+    .main-content{padding:2rem;flex:1;}
+
+    /* Cards */
+    .stat-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1.2rem;margin-bottom:2rem;}
+    .stat-card{background:white;border-radius:14px;padding:1.4rem;border:1px solid var(--border);transition:transform .2s;}
+    .stat-card:hover{transform:translateY(-3px);}
+    .stat-card .label{font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#7a6d82;margin-bottom:.4rem;}
+    .stat-card .value{font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:700;color:var(--primary);line-height:1;}
+    .stat-card .sub{font-size:.78rem;color:#7a6d82;margin-top:.3rem;}
+    .stat-card.accent{border-top:3px solid var(--accent);}
+    .stat-card.success{border-top:3px solid var(--success);}
+    .stat-card.danger{border-top:3px solid var(--danger);}
+
+    /* Table */
+    .card{background:white;border-radius:14px;border:1px solid var(--border);overflow:hidden;margin-bottom:1.5rem;}
+    .card-header{padding:1.1rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.6rem;}
+    .card-header h3{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--primary);}
+    .card-body{padding:0;}
+    table{width:100%;border-collapse:collapse;font-size:.85rem;}
+    th{background:#fdf5f9;padding:.7rem 1rem;text-align:left;font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#7a6d82;border-bottom:1px solid var(--border);}
+    td{padding:.8rem 1rem;border-bottom:1px solid #faf5ff;vertical-align:middle;}
+    tr:last-child td{border-bottom:none;}
+    tr:hover td{background:#fdf8ff;}
+
+    /* Badges */
+    .badge{display:inline-block;padding:.25rem .7rem;border-radius:50px;font-size:.73rem;font-weight:600;}
+    .badge-new{background:#e8f5e9;color:#2d7a3a;}
+    .badge-contacted{background:#e3f2fd;color:#1565c0;}
+    .badge-visit{background:#fff3e0;color:#e65100;}
+    .badge-interested{background:#f3e5f5;color:#6b3fa0;}
+    .badge-booked{background:#e8f5e9;color:#1b5e20;}
+    .badge-rejected{background:#ffebee;color:#c0392b;}
+
+    /* Buttons */
+    .btn{display:inline-flex;align-items:center;gap:.35rem;padding:.45rem 1rem;border-radius:8px;font-size:.83rem;font-weight:500;cursor:pointer;border:none;font-family:'Jost',sans-serif;transition:all .2s;text-decoration:none;}
+    .btn-primary{background:var(--primary);color:white;}
+    .btn-primary:hover{background:var(--primary-dark);}
+    .btn-danger{background:var(--danger);color:white;}
+    .btn-danger:hover{background:#a93226;}
+    .btn-success{background:var(--success);color:white;}
+    .btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--text);}
+    .btn-outline:hover{border-color:var(--primary);color:var(--primary);}
+    .btn-sm{padding:.3rem .7rem;font-size:.78rem;}
+    .btn-accent{background:var(--accent);color:white;}
+
+    /* Forms */
+    .form-control{padding:.6rem .9rem;border:1.5px solid var(--border);border-radius:8px;font-family:'Jost',sans-serif;font-size:.88rem;outline:none;transition:border-color .2s;}
+    .form-control:focus{border-color:var(--primary);}
+    .form-label{display:block;font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:#7a6d82;margin-bottom:.4rem;}
+
+    /* Alert */
+    .alert{padding:.8rem 1.1rem;border-radius:10px;font-size:.88rem;margin-bottom:1rem;}
+    .alert-success{background:#e8f5e9;color:var(--success);border:1px solid #a5d6a7;}
+    .alert-danger{background:#ffebee;color:var(--danger);border:1px solid #ef9a9a;}
+    .alert-info{background:#e3f2fd;color:#1565c0;border:1px solid #90caf9;}
+
+    /* Pagination */
+    .pagination{display:flex;gap:.4rem;align-items:center;flex-wrap:wrap;}
+    .page-btn{padding:.35rem .7rem;border-radius:6px;border:1.5px solid var(--border);background:white;font-size:.82rem;cursor:pointer;text-decoration:none;color:var(--text);}
+    .page-btn.active{background:var(--primary);color:white;border-color:var(--primary);}
+    .page-btn:hover:not(.active){border-color:var(--primary);color:var(--primary);}
+
+    /* Search bar */
+    .search-bar{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;}
+
+    /* Responsive */
+    @media(max-width:768px){
+      .sidebar{transform:translateX(-100%);transition:transform .3s;}
+      .sidebar.open{transform:translateX(0);}
+      .main-wrap{margin-left:0;}
+      .stat-cards{grid-template-columns:1fr 1fr;}
+      .main-content{padding:1rem;}
+    }
+  </style>
+  {% block head %}{% endblock %}
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">
+      <img src="/static/images/logo.png" alt="Logo">
+      <div class="sidebar-logo-text">Hanumaan PG <small>Admin Portal</small></div>
+    </div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Main</div>
+    <a href="/admin/dashboard" class="{% if request.url.path == '/admin/dashboard' %}active{% endif %}">
+      <span class="icon">📊</span> Dashboard
+    </a>
+    <div class="nav-section-label">Management</div>
+    <a href="/admin/enquiries" class="{% if '/enquiries' in request.url.path %}active{% endif %}">
+      <span class="icon">📋</span> Enquiries
+    </a>
+    <a href="/admin/gallery" class="{% if '/gallery' in request.url.path %}active{% endif %}">
+      <span class="icon">🖼️</span> Gallery
+    </a>
+    <div class="nav-section-label">Analytics</div>
+    <a href="/admin/reports" class="{% if '/reports' in request.url.path %}active{% endif %}">
+      <span class="icon">📈</span> Reports
+    </a>
+    <div class="nav-section-label">Account</div>
+    <a href="/admin/settings" class="{% if '/settings' in request.url.path %}active{% endif %}">
+      <span class="icon">⚙️</span> Settings
+    </a>
+    <a href="/" target="_blank"><span class="icon">🌐</span> View Website</a>
+  </nav>
+  <div class="sidebar-bottom">
+    <div class="sidebar-user">Logged in as<strong>{{ admin.username }}</strong></div>
+    <a href="/admin/logout" class="btn-logout">🚪 Logout</a>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main-wrap">
+  <div class="topbar">
+    <h2>{% block page_title %}Dashboard{% endblock %}</h2>
+    <div class="topbar-right">
+      <span>👤 {{ admin.username }}</span>
+      <span>🕐 <span id="clock"></span></span>
+    </div>
+  </div>
+  <div class="main-content">
+    {% block content %}{% endblock %}
+  </div>
+</div>
+
+<script>
+  // Live clock
+  function tick(){ document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-IN'); }
+  tick(); setInterval(tick, 1000);
+</script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,124 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Enquiries – Admin{% endblock %}
+{% block page_title %}Enquiry Management{% endblock %}
+
+{% block content %}
+<!-- Search & Filter -->
+<div class="card" style="margin-bottom:1.2rem">
+  <div class="card-body" style="padding:1rem 1.5rem">
+    <form method="GET" action="/admin/enquiries" class="search-bar">
+      <input type="text" name="search" class="form-control" placeholder="Search by name, phone, email..." value="{{ search }}" style="flex:1;min-width:200px">
+      <select name="status" class="form-control" style="width:auto">
+        <option value="">All Statuses</option>
+        {% for s in statuses %}
+        <option value="{{ s }}" {% if status_filter==s %}selected{% endif %}>{{ s }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit" class="btn btn-primary">Search</button>
+      <a href="/admin/enquiries" class="btn btn-outline">Clear</a>
+      <a href="/admin/enquiries/export" class="btn btn-accent">⬇ Export CSV</a>
+    </form>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <h3>Enquiries ({{ total }} total)</h3>
+    <span style="font-size:.82rem;color:#7a6d82">Page {{ page }} · Showing {{ enquiries|length }} records</span>
+  </div>
+  <div class="card-body" style="overflow-x:auto">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th><th>Name</th><th>Phone</th><th>Email</th><th>Occupation</th>
+          <th>Move-In</th><th>Type</th><th>Status</th><th>Date</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for e in enquiries %}
+        <tr id="row-{{ e.id }}">
+          <td>{{ e.id }}</td>
+          <td><strong>{{ e.name }}</strong></td>
+          <td>
+            <a href="tel:{{ e.phone }}">{{ e.phone }}</a><br>
+            <a href="https://wa.me/91{{ e.phone|replace('+91','') }}" target="_blank" style="font-size:.75rem;color:#25D366">WhatsApp</a>
+          </td>
+          <td style="font-size:.82rem">{{ e.email or '–' }}</td>
+          <td style="font-size:.82rem">{{ e.occupation or '–' }}</td>
+          <td style="font-size:.82rem">{{ e.move_in_date or '–' }}</td>
+          <td style="font-size:.82rem">{{ e.enquiry_type }}</td>
+          <td>
+            <select class="form-control" style="font-size:.78rem;padding:.3rem .5rem" onchange="updateStatus({{ e.id }}, this.value)">
+              {% for s in statuses %}
+              <option value="{{ s }}" {% if e.status==s %}selected{% endif %}>{{ s }}</option>
+              {% endfor %}
+            </select>
+          </td>
+          <td style="font-size:.78rem;color:#7a6d82">{{ e.created_at[:10] }}</td>
+          <td>
+            <button class="btn btn-outline btn-sm" onclick="showDetails({{ e.id }})">Details</button>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="10" style="text-align:center;color:#7a6d82;padding:2rem">No enquiries found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Pagination -->
+{% if total > per_page %}
+<div class="pagination" style="margin-top:1rem">
+  {% set total_pages = ((total - 1) // per_page) + 1 %}
+  {% for p in range(1, total_pages + 1) %}
+    <a href="?page={{ p }}&search={{ search }}&status={{ status_filter }}"
+       class="page-btn {% if p == page %}active{% endif %}">{{ p }}</a>
+  {% endfor %}
+</div>
+{% endif %}
+
+<!-- Detail Modal -->
+<div id="detailModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;align-items:center;justify-content:center">
+  <div style="background:white;border-radius:18px;padding:2rem;width:90%;max-width:500px;max-height:90vh;overflow-y:auto;position:relative">
+    <button onclick="document.getElementById('detailModal').style.display='none'" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.5rem;cursor:pointer">×</button>
+    <h3 style="font-family:'Cormorant Garamond',serif;color:var(--primary);margin-bottom:1.5rem">Enquiry Details</h3>
+    <div id="detailContent"></div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+const enquiries = {{ enquiries | tojson }};
+
+function updateStatus(id, status) {
+  const fd = new FormData();
+  fd.append('new_status', status);
+  fetch(`/admin/enquiries/${id}/status`, {method:'POST', body:fd})
+    .then(r => r.json())
+    .then(d => { if(!d.success) alert('Failed to update status'); });
+}
+
+function showDetails(id) {
+  const e = enquiries.find(x => x.id === id);
+  if (!e) return;
+  document.getElementById('detailContent').innerHTML = `
+    <table style="width:100%;font-size:.9rem;border-collapse:collapse">
+      ${Object.entries({
+        'Name': e.name, 'Phone': e.phone, 'Email': e.email || '–',
+        'Occupation': e.occupation || '–', 'Company/College': e.company_college || '–',
+        'Move-In Date': e.move_in_date || '–', 'Enquiry Type': e.enquiry_type,
+        'Status': e.status, 'Message': e.message || '–', 'Submitted': e.created_at
+      }).map(([k,v]) => `<tr><td style="padding:.5rem .2rem;font-weight:600;color:#7a6d82;width:140px">${k}</td><td style="padding:.5rem .2rem">${v}</td></tr>`).join('')}
+    </table>
+    <div style="margin-top:1.2rem;display:flex;gap:.6rem;flex-wrap:wrap">
+      <a href="tel:${e.phone}" class="btn btn-primary btn-sm">📞 Call</a>
+      <a href="https://wa.me/91${e.phone.replace('+91','').replace(/\D/g,'')}" target="_blank" class="btn btn-success btn-sm">💬 WhatsApp</a>
+    </div>
+  `;
+  document.getElementById('detailModal').style.display = 'flex';
+}
+</script>
+{% endblock %}
